@@ -1,0 +1,17 @@
+Burp-> Web sızma testlerinde kullanılır,gelen giden isteklerin görüntülenmesi için kullanılır
+
+Nessus-> zaafiyet ve envanter yönetiminde kullanılır  , Kullanıcı adı:Mesut , Şifre:kahraman1
+
+fuzzing=ilgili dosya ve dizinlerin olup olmadığını kontrol etmek için kullanılan yazılım
+
+XSS=Script kodlar üzerinden(html,java gibi),siteye saldırı yapılmasıdır,çoğunlukla cookilere saldırı amacıyla kullanılır
+
+SSH=Kullanıcılara sunucularını internet üzerinden kontrol etmesini ve düzenlemesini sağlayan protokol.Uçtan uca şifreleme.
+
+Brute Force=Kullanıcı adı ve şifre ile ilgili bir saldırı.
+
+Kabuk(Shell)=kullanıcının girdiği komutları anlayan ve uygulayan programlama katmanı
+
+Reverse shell=Saldırgan makine komut çalıştırarak karşı makinayı ele geçirdiği kabuk.Bir dinleyici portu vardır.
+
+Bind shell=Kullanıcının çalıştırdığı zararlı komutun açtığı bağlantıyı bekleten kabuk.

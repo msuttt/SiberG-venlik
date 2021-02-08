@@ -1,0 +1,88 @@
+Burp-> Web sızma testlerinde kullanılır,gelen giden isteklerin görüntülenmesi için kullanılır
+
+Nessus-> zaafiyet ve envanter yönetiminde kullanılır  , Kullanıcı adı:Mesut , Şifre:kahraman1
+
+fuzzing=ilgili dosya ve dizinlerin olup olmadığını kontrol etmek için kullanılan yazılım
+
+XSS=Script kodlar üzerinden(html,java gibi),siteye saldırı yapılmasıdır,çoğunlukla cookilere saldırı amacıyla kullanılır
+
+SSH=Kullanıcılara sunucularını internet üzerinden kontrol etmesini ve düzenlemesini sağlayan protokol.Uçtan uca şifreleme.
+
+Brute Force=Kullanıcı adı ve şifre ile ilgili bir saldırı.
+
+Kabuk(Shell)=kullanıcının girdiği komutları anlayan ve uygulayan programlama katmanı
+
+Reverse shell=Saldırgan makine komut çalıştırarak karşı makinayı ele geçirdiği kabuk.Bir dinleyici portu vardır.
+
+Bind shell=Kullanıcının çalıştırdığı zararlı komutun açtığı bağlantıyı bekleten kabuk.
+
+
+----------------------------------------LİNUX DERSLERİ---------------------------------------------------------------
+kuulanıcıadım=mesut
+şifrem=kahraman1
+
+sudo=geçici olarak root yetkisi veriyor
+sudo -l=yetkileri listeliyor
+
+sudo olarak girdiğimizde ilk önce şifre sorar bu 5 dakikalığına geçerli olur.sudo -k ile bunu sonlandırabiliriz.
+
+clear=sayfayı temizler
+sudo -i=root hesabına geçer
+
+sudo useradd mine=yeni kullanıcı
+sudo passwd mine=yeni şifre
+
+cat /etc/passwd=şifreleri görebiliyor
+cat /etc/shadow=root değilse göremez.şifrelerin özet değerleri var
+
+exit=bulunduğun kullanıcıdan çıkar
+
+sudo usermod -aG sudo mine=mine olarak giriş yapar ve bu sefer shadow dosyasını görebilir
+sudo cat /etc/sudoers=sudo dosyalarını kimler hangi yetkiyle kullanabiliyor onu gösterir
+sudo visudo=sudoers dosyasını düzenleyebiliyoruz
+
+nano dosyaismi=bir dosya açar.Metin düzenleyici.
+chmod +x dosyaismi.sh=dosyaya yazma izni verir
+sudo ./tellme.sh=başka bir kullanıcıdayken root olarak açarsın.Bir tür saldırı sayılır.
+
+!bash=root yükseltme saldırısı.
+bash=komut yarumlayıcısı.
+-----------------------
+2.VİDEO=ŞİFRE POLİTİKASI
+
+gedit=metin editörü ve linuxta dosyaları düzenlemeye yardımcı olan komut.
+sudo apt install gedit=gedit'i indiriyor.
+sudo apt install lipbam-pwquality=şifre politikası için gereken dosyayı indiriyor.
+------------------------
+3.VİDEO=YENİ HESAP AÇMA
+
+sudo useradd ahmet -m -d /home/ahmet -s /bin/bash=kullanıcı oluşturup home içerisinde onun dosyasını oluşturuyor ve bash komutu kullanmasını sağlıyor.
+cd /home=home dizinine gider
+ls -l=listeler
+mehmet ve ahmet kullanıcısı şifreleri=sifrebelirle.
+
+sudo chmod 700 *=bir kullanıcının başka bir kullanıcının dosyasına erişmesini engelliyor
+sudo nano /etc/login.defs=otomatik olarak bir kullanıcının başka bir kullanıcının dosyasına erişmesini engelliyor
+---------------------------
+
+4.VİDEO=Açılan kullanıcıya zaman tanıma
+
+sudo useradd ahmet -m -d /home/ahmet -s /bin/bash -e 2023-06-30=bu tarihe kadar geçerli
+sudo -e 2021-06-30=daha sonra tarihi değiştirebiliyorum
+
+selahattin kullanıcısı şifre=parolabelirle1
+
+sudo -e selahattin=selahattin kullanıcısının şifresini değiştirebiliyorum
+---------------------------------
+
+5.VİDEO=Kilitli hesapların yönetilmesi
+
+sudo gedit /etc/pam.d/common-auth = hesap yönetimi için gerekli dosya
+
+Bu dosyanın içinde "here are the per package" yazısının altına  şunu yazdı;
+auth required pam_tally2.so onerr=fail deny=3  unlock_time=600 even_deny_root audit = gerekli, 3 kere dene, süre 600 saniye, root olsa bile kilitle
+
+sudo pam_tally2= = hangi kullanıcı ile kaç kere şifre denenmiş onu gösterir
+sudo usermod -U selahattin = Kilitlenen selahattin hesabını aç
+sudo usermod -l selahattin = selahattin hesabını kilitle
+

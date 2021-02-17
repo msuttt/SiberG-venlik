@@ -45,7 +45,7 @@ nano dosyaismi=bir dosya açar.Metin düzenleyici.
 chmod +x dosyaismi.sh=dosyaya yazma izni verir
 sudo ./tellme.sh=başka bir kullanıcıdayken root olarak açarsın.Bir tür saldırı sayılır.
 
-!bash=root yükseltme saldırısı.
+!bash=root yükseltme saldırısı./etc/ssh/ssh_config içerisine yazdı.
 bash=komut yarumlayıcısı.
 -----------------------
 2.VİDEO=ŞİFRE POLİTİKASI
@@ -53,6 +53,7 @@ bash=komut yarumlayıcısı.
 gedit=metin editörü ve linuxta dosyaları düzenlemeye yardımcı olan komut.
 sudo apt install gedit=gedit'i indiriyor.
 sudo apt install lipbam-pwquality=şifre politikası için gereken dosyayı indiriyor.
+sudo gedit /etc/security/pwquality.conf = şifre politikasının bulunduğu dosyaya giriyor.
 ------------------------
 3.VİDEO=YENİ HESAP AÇMA
 
@@ -68,11 +69,11 @@ sudo nano /etc/login.defs=otomatik olarak bir kullanıcının başka bir kullan�
 4.VİDEO=Açılan kullanıcıya zaman tanıma
 
 sudo useradd ahmet -m -d /home/ahmet -s /bin/bash -e 2023-06-30=bu tarihe kadar geçerli
-sudo -e 2021-06-30=daha sonra tarihi değiştirebiliyorum
+sudo -usermod ahmet e 2021-06-30=daha sonra tarihi değiştirebiliyorum
 
 selahattin kullanıcısı şifre=parolabelirle1
 
-sudo -e selahattin=selahattin kullanıcısının şifresini değiştirebiliyorum
+sudo passwd -e selahattin=selahattin kullanıcısının şifresini değiştirebiliyorum
 ---------------------------------
 
 5.VİDEO=Kilitli hesapların yönetilmesi
@@ -85,4 +86,121 @@ auth required pam_tally2.so onerr=fail deny=3  unlock_time=600 even_deny_root au
 sudo pam_tally2= = hangi kullanıcı ile kaç kere şifre denenmiş onu gösterir
 sudo usermod -U selahattin = Kilitlenen selahattin hesabını aç
 sudo usermod -l selahattin = selahattin hesabını kilitle
+--------------------------------
+
+6.VİDEO=Dosya Sahiplikleri
+
+echo "yeni dosya" > yeni.txt = "yeni" adında bir txt dosyası açtı.
+
+rw-r-r = ilki sahip olduğu grup, ikincisi bulunduğu grup, üçüncüsü diğerleri.
+cd .. = home dizinine gider.
+
+sudo groupadd developers = developers adında grup oluşturulur.
+sudo tail /etc/group = oluşturulan grubun varlığını kontrol etmek için.
+
+chmod u+x echo.sh = echo dosyasına çalıştırma izni veriyor ama sahip olduğu gruba(u).sahip olunan grup olsaydı(g),diğer gruplar(o).
+r=okuma, 4
+w=yazma, 2
+x=çalıştırma, 1
+
+chmod 700 echo.sh = echo dosyasının ilk grubuna bütün yetkileri verme
+
+stat -c %a echo.sh = sahipliğin sayısal değeri
+stat -c '%n %a' * = dosyanın adı ve sahipliğin sayısal değeri
+-------------------------------------
+
+7.VİDEO=SUID GUID STICKY BIT
+
+ls -l /usr/bin/passwd = bütün yetkilerini listeledi bu dosyanın.İçeride "s" yetkisi var.Bu SUID demek.Root yetkisi.
+
+SUID=Set Owner User ID.Herhangi bir programın herhangi bir kullanıcı tarafından o programın sahibini yetkisiyle çalıştırmaya yarar.
+GUID=Globally Unique Identifier.UUID ile aynı şey.
+çok zorunda olmadıkça SUID yetkisi vermeyelim.
+
+sticky bit=Herhangi bir kullanıcı bir dosya oluşturduğunda,oturum açan başka bir kullanıcının bu dosyayı silme,değiştirme yetkisi olmasın istiyorsak bunu kullanırız
+ls -ld /tmp=tmp dosyasına girdi.Buradaki "t" bunun sticky bit olduğunu gösterir.
+---------------------------------------------
+
+8.VİDEO ecryptfs dosya oluşturma
+
+sudo apt install ecryptfs-utils = ilk önce bu kütüphaneyi indiriyor.
+sudo mkdir /secrets = "secrets" adında bir dosya oluşturdu.
+
+sudo mount -t ecryptfs /secrets /secrets = bu dosyanın kriptoluk özelliklerini belirledi.
+sudo umount /secrets = unmount etti,çıkardı.bağlantıyı kesti.Daha sonra dosyaya girmeye çalıştı.Dosya adı şifreli geldi.
+
+yine sudo mount ile uzun bir kod yazdı.Burada gizlediğimiz dosyanın özelliklerini verdi ve artık dosyayı görünür hale getirdi.(kodlar "linuxKod" adlı ekran görüntüsünde)
+ekrandaki kodda "sudo mount -t ecryptfs" olacak
+------------------------------------------------
+
+9.VİDEO=GPG uygulamaları
+
+GPG=hibrit şifreleme yazılımı
+
+simetrik şifreleme=tek bir şifre kullanılır.Onunla şifreyelip onunla açılır.
+asimetrik şifreleme=özel anahtarla şifrelerim,karşı taraf onu açık anahtarla açabilir.
+
+gpg -c cokgizli.txt = oluşturduğu dosyaya gizlilik özelliği verdi gpg ile.
+cat cokgizli.txt.gpg = sonra dosyanın içini açıyor ve anlaşılmayan yazılar gözüküyor.
+
+shred -u -z cokgizli.txt = "shred" komutu dosyayı tamamen siler."Remove" komutundan daha etkili
+
+sudo gpg -d cokgizli.txt.gpg = diğer kullanıcılardan biriyle girdi ve dosyayı açtı
+sudo gpg --full-generate-key = kendi özel şifrelememi oluşturuyorum.
+
+gnupg=gerekli olan dosya ve klasörlerin üretildiği yer
+
+sudo gpg --export -a -o mesut_public_key.txt = anahtar üretiyor.
+sudo gpg --import /home/lila/gnupg/lila_public_key.txt = lila kullanıcısının home dizininde bir anahtar üretti.
+
+sudo gpg -s -e cokgizli.txt = özel anahtarla encrypt ediyor.
+------------------------------------------------
+
+10.VİDEO=İPTABLES
+
+sudo iptables -L = bilgisayarımdaki güvenlik duvarı politikası(ıpv4 için).IPV6 için "ip6tables" diyoruz.
+
+sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT = benim sunucum karşı tarafla bağlantı kuruyorsa buna izin veren bir kod.
+sudo iptables -A INPUT -p tcp --dport ssh -j ACCEPT = uzaktaki sunucuya ulaşmak için yazılır.DNS ile haberleşip domain name almak isterler,bunun için ssh yerine 53
+  ve tcp aynı kalır ayrıca udp de yazılabilir.
+
+sudo iptables -I INPUT 1 -i lo -j ACCEPT = sistem kendi kendine çelme takmasın.Localhost,127.0.0.1 gibi trafikler karışmasın diye yazılır.
+
+sudo iptables -A INPUT -m conntrack -p icmp --icmp-type 3 --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT = Sistemin sağlığını kontrol etmek için kullanılır.3 yerine 11 verirsek
+  ttl aşımına uğrayan verileri gösterir.12 verirsek bozuk başlıklı olanları gösterir.
+
+sudo iptables -P INPUT DROP = Kabul edilenler hariç hepsini düşür.
+
+sudo apt install iptables-persistent = tanımladığımız kurallar restart ile uçmasın diye bu paketi indirmemiz gerekir.
+
+sudo iptables -P INPUT ACCEPT = bütün input kurallarını siler.Ayrıca "OUTPUT" ve "FORWARD" için de yazabiliriz.
+sudo iptables -F = yukarıdaki koddan sonra bunu yazdığımızda bütün kuralları kaldırır.
+-----------------------------------------------
+
+11.VİDEO=SSH SERVİS KURULUMU
+
+ssh-keygen = ssh anahtarı oluşturur.
+
+id_rsa.pub dosyasındaki anahtarı diğer sisteme yapıştırıyor aşağıdaki gibi;
+
+"echo ssh anahtarı" >> authorized_keys = diğer sistem artık bu anahtarı tanıyacak.
+
+chmod 600 id_rsa = okuma,yazma yetkilerini veriyor.SSH bağlantısı bundan daha düşük bir yetkiye sahip olursa bizi uyarır ve çalışmaz.
+ssh -i id_rsa mesut@12.0.1.16 = benden kullanıcı adı ve şifre istemez,doğrudan hedef sisteme bağlanır.Bunun avantajı şu; bazen kullanıcı adı ve şifre girmek riskli olabilir.
+ ele geçirilebilir,o yüzden bu şifre sormadan bağlanır.(12.0.1.16->bağlandığı ubuntunun ip'si).
+----------------------------------------------
+
+12.VİDEO = SSH parolasız erişim yöntemi
+
+ssh servisinin alternatifi olarak telnet var ancak telnet,trafiği açık yolladığı için tercih edilmez.
+
+netstat -antp | grep 22 = servis var mı gösterir.(22 ssh portu)
+systemctl status ssh = servis var mı diye bakar.
+
+sudo apt install openssh-server = ssh servisini ayağa kaldıran paketleri indirir.
+
+sudo systemctl enable ssh = ssh'ı aktif et
+
+ssh bilgisayaradı ve ip = diğer sisteme bunu yazdı ve asıl sistemdeki servise bağlandı.
+
 

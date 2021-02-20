@@ -202,5 +202,50 @@ sudo apt install openssh-server = ssh servisini ayağa kaldıran paketleri indir
 sudo systemctl enable ssh = ssh'ı aktif et
 
 ssh bilgisayaradı ve ip = diğer sisteme bunu yazdı ve asıl sistemdeki servise bağlandı.
+---------------------------------------------
+
+Temel Linux Komutları
+
+ls -l = detaylı olarak listeler.
+ls -a = gizli dosyaları da listeler.
+ls -R = alt dizinlerdeki dosyaları da listeler.
+
+touch metin.txt = dosya oluşturur.
+cat -n metin.txt = dosya içeriğini numaralar.
+
+top = çalışan uygulamaların işlemci vs. kullanımı
+top -c = işlemci kullanımına göre sıralar.
+
+uptime = sistemin çalışma zamanını verir
+
+whatis poweroff = poweroff komutuyla ilgili bilgi almak için kullanılır
+man poweroff = komutla ilgili detaylı bilgi almak için kullanılır
+
+pwd = hangi dizinde olduğumuzu gösterir
+
+cat dosya1 dosya2>dosya3 = ilk iki dosyayı 3.dosyada birleştirir.
+
+cp dosya.txt /home = dosyayı bir klasöre kopyalar
+
+mv dosya.txt /home = dosyayı taşır
+mv eskiad yeniad = dosya ismini değiştirir.
+
+mkdir /home/yenidizin = yeni dizin oluşturur.
+rmdir /home/yenidizin = boş dizinleri siler.
+rm dosya = içindekilerle beraber siler.
+
+find dosyaismi = dosyayı bulur.
+
+grep siber dosya.txt = siber kelimesi dosyada var mı diye bakar.
+
+df = sistemin disk alanı kullanımını gösterir
+du dosya.txt = dosyanın ne kadar alan kapladığını gösterir.
+
+kill = yanıt vermeyen dosyayı kapatır.
+
+uname = makine adı,işletim sistemi gibi bilgileri verir. 
+
+hostname = host adı
+hostname -I = ip adresi
 
 

@@ -247,5 +247,388 @@ uname = makine adı,işletim sistemi gibi bilgileri verir.
 
 hostname = host adı
 hostname -I = ip adresi
+---------------------------------------------------
+
+      ---  Temel Kriptoloji Dersleri ---
+
+
+1.VİDEO = Kriptolojiye Giriş
+
+Kriptografi = okunabilir bir verinin istenmeyen taraflarca okunamaması için şifreleme ile uğraşan bilim dalıdır.
+
+Tarihte insanlar yazışmaları gizlemek için toprak küp kullanmışlar.Kağıdı sopaya sarma yöntemi,monoalfabe ve polialfabe yöntemleri kullanılmış.
+Daha sonra "one time pad" yöntemi kullanılmış,her mesaj yalnızca 1 anahtar gerektiriyor ancak mesaj uzunluğu kadar anahtar gerektiği için 
+uzun mesajlarda bu sorun olmuş.
+Daha sonralarda mesajın kırılamaz olması için anahtar uzunluğunun genişletilmesi düşünülmüş.
+-----------------------------------------------------
+
+2.VİDEO = Kriptolojiye Giriş 2 
+
+Data Encryption Standard,simetrik şifreleme.56/112/168 bit uzunlukları var.1977'de IBM tarafından geliştirildi.
+Li=Ri-1
+Rİ=Li-1 xor f(Ri-1,Kİ)
+bu formüllere göre bazı hesaplamalardan geçiyor.Sboxlardan geçiyor(Nonlineer).En son permütasyona uğruyor.
+
+Her iki tarafta aynı anahtarın olması lazım.Bu anahtarın dağıtılması ve saklanmasında büyük bir sorun.Asimetrik şifrelemeye dayalı bir çözümü var bunun.
+
+Asimetrik şifrelemede haberleşecek taraf açık anahtar ile yolluyor diğer taraf onu kendi anahtarı ile açıyor.Böylelikle iki taraf birbirini tanımadan
+anahtar paylaşmak amacıyla yüzleşmeden çalışabiliyor.
+
+Simetrik;
+  şifreleme ve şifre çözmek için aynı anahtar kullanılır.
+  çok hızlıdır.
+  yüksek miktarda verinin güvenli transferi.
+Asimetrik;
+  şifreleme için açık,şifre çözmek için gizli anahtar kullanır.
+  yavaş çalışır.
+  genellikle simetrik şifrelemede kullanılacak gizli anahtarların paylaşılmasında kullanılır.
+
+ÖRNEK;
+A(açık anahtar g,gizli anahtar a) B(açık anahtar p,gizli anahtar b)
+
+A=g^a mod p
+B=g^b mod p
+
+S=A^b mod p
+S=B^a mod p
+
+iki "S" sayısının da aynı olması lazım.
+
+RSA algoritması=iki büyük asal sayının çarpımının çarpanlara ayrılması.Güçlü ancak yavaş bir algoritma,anahtar takas algoritmalarında kullanılır.
+
+Eliptik eğri=depolama ve veri iletim gereksinimi azaltıyor.Kısıtlı kapasitelerde kullanılır.
+
+AES algoritması=2001 yılında geliştirildi.Permütasyon ve yer değiştirme ağı.Her tur 128 bit ile şifrelenir.İlk tur,tur anahtarı eklenir.
+Daha sonra kaydırma,yer değiştirme gibi işlemler yapılır.
+
+HSM=şifrelemede kullanılan anahtarların üretilmesi,saklanması ve dağıtılmasında kullanılır.Askeri alanlarda,bankalarda vs.
+
+--------------------------------------------------------
+
+3.VİDEO = Rastsal sayı üreteçleri
+
+Kaynağı,sonucu önceden belirleyemediğimiz yöntemlerle üretilen sayılardır.
+
+Özellikler;
+  Yüksek Rastsallık(Tahmin edilemezlik)
+  Düzgün dağılım.
+  Bağımsızlık(üretilen sayılar arasında ilinti olmaması)
+  Aperiyodiklik(Kullanım sürecinde sayıların tekrar etmemesi)
+
+Entropi=Belirsizliğin ölçütü.Yüksek olması gerekir.Formülü masaüstünde.
+
+Düzgün dağılım formülleri ekran alıntısında
+
+Rastsal sayıların kullanım alanları;
+-Şifreleme anahtarı
+-Tek kullanımlık şifre
+-Zaman Damgası
+-Kimlik Doğrulama vs.
+
+Sözde rastsal üreteç(yazılımsal,donanımsal);  
+-ilk değer bağımlı
+-periyodlu
+-tahmin edilebilir
+gerçek üreteç(fiziksel);
+-ilk değer bağımsız
+-periyodsuz
+-tahmin edilemez
+
+Kriptografik sözde üreteçler=üreteç çıkışının ilk değere en az bağımlı olduğu algoritmalar.
+----------------------------------------
+
+4.VİDEO = Rastsal sayı üreteçleri 2
+
+sözde üreteçlerde çıkış > giriş
+
+Gerçek üreteçler = istatistiksel olarak birbirinden bağımsız,tahmin edilemez sayılar üreten fiziksel aygıtlar.Ekran görüntüsü var.
+
+Rastsal sayılarda her bir dizin alt bloklara bölünür,bunların tekrarlılığı kontrol edilir.Testi geçme oranları hesaplanır.
+
+Çevrimiçi test;
++Donanımsal gerçekleme
++Hızlı sayı üretme
+-Sınırlı örnek uzayı
+-Test sayısı sınırlı
+
+Çevrimdışı " ";
++Test sayısı çeşitli
+-Yazılımsal gerçekleme
+-Geniş örnek uzayı
+-Yavaş
+
+Bazı üreteç testleri ekran alıntısında.
+---------------------------------------------
+
+5.VİDEO = Fiziksel olarak klonlanamayan fonksiyonlar(PUF)
+
+Master anahtara sahip olduğumuzda alt anahtarlara ulaşabiliriz
+
+Fiziksel saldırılar;
+
+invazif;
+Mikroterminaller ile saldırı=devre üstünde yapı kaldırılarak mikroterminaller ile devre okunabilir
+Odaklanmış iyot demeti salsırısı=iyot demetleri ile aynı şeyi yapıyor
+
+invazif olmayan; 
+Yan kanal saldırısı=Devreye fiziksel müdahele bulunmadan yapılır.Akım değeri,çalışma zamanı.
+
+Fiziksel klonlanamayan fonksiyonlar = üretim varyasyonları ile her bir tüm devre için farklı çıkışlar üretir.
+Güvenlik(aynı fonksiyonu içeren devrelerin farklı sonuçlar üretmesi),Güvenilirlik(tümdevrenin aynı giriş için aynı sonucu üretmesi)
+
+uygulama alanları; tüm devre için farklı anahtarlar üretmek, fikri mülkiyetlerin korunması
+
+Zayıf(az sayıda challenge-response) ve Güçlü(Çok sayıda  challenge-response) puflar
+
+SRAM puflar var.İki tane not kapısından oluşuyor.Reset serbest bırakıldığında a ve b birbiri ile yarışıyor.Biri 0 diğeri 1 oluyor.Bunu üretim
+varyasyonları ve çevresel koşullar belirler
+
+Arbiter Puflarda birden fazla mux var.Bunlara gelen dürtülere göre sonuç 1 veya 0 oluyor.
+
+Halka osilatörlerde bir osliatör çifti seçilir ve darbe işaretlerinin karşılatırılmasına göre 1 veya 0 sonucu üretir.
+
+tekillik=her bir devre için aynı fonksiyon ne kadar farklı sonuç üretir
+güvenilirlik=farklı zamanlarda üretilen sonuçların ne kadar aynı olduğu
+uniformity=üretilen 0 ve 1 değerlerinin ne kadar birbirine yakın olduğu
+Bit aliasing=farklı devrenin aynı dürtüler için ne kadar farklı cevaplar ürettiğinin bit bazında kontrolü
+-------------------------------------
+
+6.VİDEO = Simetrik algoritmalar - DES
+
+ilk şifreleme algoritması.Bir blok şifrelemedir.IBM tarafından 1970'lerde geliştirildi.Daha sonra güvenli olmadığı anlaşıldı ve yerine 
+triple des ile aes algoritmaları kullanılmaya başlandı.
+
+blok uzunluğu 64 bit, anahtar uzunluğu 56 bit
+
+des 3 aşamadan oluşur;initial permutation, 16 round, final permutation
+
+Bitler karıştırılır,sağdan ve soldan gelenler işleme sokulur.F fonksiyonu ve XOR.
+sağ 32 bit "F" fonksiyonu ile 48 bit genişletiliyor ve soldan gelenler ile XOR ' a sokuluyor.Daha sonra 
+"S" kutularına gidiyor.
+
+S kutuları 8 adettir.Giriş 6 çıkışı 4 bit.İlk ve son bit birleşimi tabloda hangi satıra bakacağımızı,ortadakiler ise 
+hangi sütuna bakacağımızı gösterir.Ekran alıntısı var.
+
+SBox'lardan çıkan sonuç permütasyona sokulur.
+
+Sonra işlemler ters çevriliyor ve 64 bitlik sonuç elde ediliyor.Sonra 16 işleme girerek buradan 48 bitlik 16 tane anahtar üretilmiş oluyor.
+
+DES güvenli olmadığı için 3DES çıkartılmış.
+---------------------------------------
+
+7.video Simetrik algoritmalar - AES
+
+Simetrik algoritmalardan biri olan DES'ten bahsetti.Güvenli olmayışından dolayı AES'in çıkartılışından bahsetti.
+
+AES'in 128 bit blok uzunluğu var ve 128/192/256 bit anahtar uzunluğu var.Byte'lar AES durum matrislerinden geçiyor.10/12/14 turdan geçiyor.
+
+Temel Adımlar; AddRoundKey,Subbytes,ShiftRows,MixColumns.
+
+Subbytes=Her bir byte'ın tabloda sayısal karşılığına bakılır.Ters subbytesda bu sayı ters çevrilir eski haline.Ekran görüntüsü(Subbytes)
+ShiftRows=ilk dizeye dokunulmaz. 2.dize 1 bit sola, 3.dize 2 bit, 4.dize 3 bit kaydırılır.Tersine işlemlerde sağa kaydırılır.Ekran görüntüsü(ShiftRows)
+MixColumns=Tabloda sütunlar matris ile çarpılıyor.Tersine işlemde alttaki matrisi kullanıyor.Ekran görüntüsü(MixColumns)
+AddroundKey=tablodaki her bir sütunu tur anahtarıyla Xor işlemine sokuyor.Ekran görüntüsü(AddRoundKey)
+
+KeyExpansion=bir chipper key var.Buradaki sütunlar shiftrowsda olduğu gibi kaydırılıyor ve alttaki ile XOR işlemine sokuluyor.2. işlemde önceki anahtar ile XOR yapılıyor 
+3. işlemde yeni sütun ile bir önceki sütun XOR işlemine tabi tutuluyor ve böyle devam ediyor.
+
+Operasyon Modları=Aes'in olduğu gibi kullanılması güvenlik açığı oluşturabilir.Operasyon modlarının kullanılması lazım.
+
+Electronic Codebook=Mesaj bloklara bölünür.Aes işlemine sokulur.Şifreli bloklar birleştirilir en sonunda.
+Cipher Blockchain=Iv değeri XOR'a sokulur bloklar ondan sonra yukarıdaki işlemler yapılır.
+Counter=ilk başta counter değeri var.Yukarıdaki işlemlerden geçtikten sonra blok XOR'a sokuluyor.
+
+AES brute force ataklara karşı dayanıklı ve başarılı olan pratik bir saldırı yok.
+-----------------------------------------------
+
+8.Video Asimetrik algoritmalar - RSA
+
+Simetrik ve Asimetrik algoritma farkından bahsetti.Asimetrik için bir örnek; Posta kutusu.Herkes açık anahtarla kutuya mektup atabilir ama onu açan sadece gizli anahtarla açar.
+Asimetrik imza=mesaj gizli anahtar ile imzalanır,açık anahtarla açılabilir.
+
+Asimetrik şifrelemeye 2.videodaki örnekteki gibi bir örnek verdi.
+
+Fonksiyonun tersini almak şifreyi zorlaştırmaz,bunu kırmak kolay olabilir ancak sayıyı çarpanlara ayırırsak bunu kırması zorlaşabilir.Bu yüzden RSA kullanılır.
+
+RSA formülü ve örnek ekran alıntısında var.
+
+asal çarpanlara ayırma en yüksek 576 bit için yapılmıştır.Kuantum bilgisayarlar ile bu çözülebilir.Zamanlama atakları, yan kanal saldırıları yapılabilir.
+----------------------------------------
+
+9.VİDEO Asimetrik algoritmalar - ECC
+
+Bir eliptik eğriye göre bulunur.Kriptografinin sağladığı 3 şey;Güvenlik,veri bütünlüğü,kimlik doğrulama.
+
+Simetrik algoritmalarda iki temel problem; anahtar paylaşımı ve imza.
+
+Anahtar paylaşımı=aynı fiziksel ortamdaysa kolay ama farklı ortamlarda zor
+imza=yapılmayan iş üstlenilebilir.
+
+Diffie Helman protocol;
+-bir şifreleme ve şifre çözme
+-şifreleme ve şifre çözmenin kolayca yapılması
+-şifre çözme algoritmasından şifreleme algoritmasının zor anlaşılması
+-iki algoritmanın birinden diğerinin hesaplanmasının zor olması
+Tek yönlü fonksiyon olması lazım.
+
+formüller ekran görüntüsünde.Mod alınıyor.Y'ye karşılık birçok X değeri olabileceği için bunun bulunması zordur.
+
+Diffie Helman protokolünün ECC ile gerçekleme formülü ekran görüntüsünde.Bu gerçeklemenin sonlu olarak tanımlanması lazım.iki temel şey var;
+
+GF(p)=p asal sayı ve p kadar küme
+GF(2^m)=2^m elemandan oluşan bir küme, p indirgenemez polinom, elemanlar tüm polinomların katsayıları
+
+Tek yönlü fonksiyon algoritması ekran görüntüsünde.
+---------------------------------
+
+10.VİDEO Tek yönlü fonksiyonlar
+
+Hash fonksiyonları=değişken uzunluklu veri kümelerini,sabit uzunluklu veri kümelerine haritalayan fonksiyonlar.1B'lık dosya ile 1GB'lık dosyanın uzunluğu aynı ama sonuç farklı.
+                   şifreleme olarak kullanılmaz çünkü tersi elde edilemez.
+
+ilk hash fonksiyonuna 1970'lerde diffie helman'ın makalesi sonucu ihtiyaç duyuldu.MD5 ve SHA1 çıkarıldı ama güvenilirliğini yitirdi.Şuan SHA2 VE SHA3 kullanılıyor.
+
+Hash fonksiyonu=belirli bir görevi yerine getirir.
+fonksiyon=tanım her bir eleman görüntü kümesindeki yalnızca 1 elemanla eşleşir.
+Tek yönlü fonksiyon=Hesaplaması kolay ancak tersini almak zordur.
+
+Mesajlar bloklara ayrılır.Her biri bir fonksiyona girer,başlangıçta IV değeri olur.(Merkle-Damgard)
+
+SHA224-SHA256;
+
+A'dan H'ye kadar IV girdileri var.Mesaj bunlarla XOR'a giriyor.Wi girişi 32 bitlik mesaj, Ki girişi 32 bitlik önceden belirlenen 64 adet sayı.Ekran görüntüsü var(sha224-256).
+512 bitlik girişlerle işlem yapılır.Bu işlemler 8'e bölünür.Her 512 bit'e "chunk" denilir.Her chunk 64 döngülük işleme sokulur,son bloğun sonuna mesaj boyutu eklenir,mesaj 
+bitiminden sonra 512'ye tamamlamak için ilk bite 1 konulur diğerlerine 0 ve işlem sonunda A'dan H'ye bütün sonuçlar birleştirilir.
+
+
+sha384-512;
+
+IV girişler 64 bit.Wi 64 bit.Ki 64 bit ve 80 adet.
+Mesaj boyutu 128 bit.
+1 chunk 1024 bit ve 16'ya bölünür.
+Üsttekinden en önemli farkı IV değerlerinin farklı olması.
+
+SHA3;
+
+SHA ailesinin en güncel ve güvenilir programı.2015 yılında duyuruldu.Çıkarılmasının sebebi sha2'nin kırılması değil,sha2'nin kendisinden önceki kırılan yapılara benzemesi.
+Saniyedeki çıktı sayısı yüksek ve düşük enerji tüketiyor.Ekran görüntüsü(SHA3).
+
+absorbing ve squeezing şeklinde 2 bölümü var.P mesaj chunkları, Z çıktılar.1 adet çıktı istiyorsak Z0'ı elde ettiğimiz an mesajı sonlandırırız.r=rate,c=capacity
+R ve C'nin toplam uzunluğu 1600 bite eşit olmalı.Mesajın boyutu R değerine eşit olmalı.Mesajı R'ye eşitlemek için kalan kısma 1 sonra 0 en son yine 1 eklenir.
+Mesaj tam olsa bile mesaj sonuna iki tane 1 eklenmelidir.
+
+Ekran görüntüleri(NedenHash,HashKullanımAlanları,YapılanSaldırı,YapılanSaldırı2)
+-----------------------------------------------
+
+11.Video - Yan Kanal Analiz ve Saldırıları
+
+Kerckhoff prensibi = Bir kripto sistemin güvenliği sistemin değil anahtar gizliliğine dayanmalıdır.Kriptografik sistem en zayıf halka kadar sağlamdır.
+
+Yan kanal saldırıları=Kriptografik cihazlar üzerindeki gerçeklemelerden gelen girişlerin,çıkışların dinlenmesi.İşlem süresi,güç tüketimi,ışık,ses
+
+pasif saldırı=cihazın işleyişine müdahale yok
+aktif saldırı=cihaza dışarıdan müdahale var
+
+istilacı saldırı=cihazın componentine doğrudan erişim ve müdahale
+yarı istilacı=doğrudan erişim var ama cihaza zarar verilmiyor
+istilacı olmayan=cihaza doğrudan erişim yok
+
+basit saldırılar=sadece 1 ölçüm
+diferansiyel " " =1'den fazla ölçüm
+
+Akustik saldırılar;
+
+  Klavyenin sesine göre basılan harfi dinleme vs.
+
+Zamanlama saldırıları;
+
+ Kriptografik bir işlemin farklı girişler için farklı sürelerde sonlanması.İşlem süresinin anahtar ve girişten bağımsız olması bir önlem
+
+Güç Analizi;
+
+ Bir işlem esnasında anlık güç tüketiminin kontrolü.
+ Ekran görüntüleri(ECCGüçAnalizi,SCA)
+
+Diferansiyel güç analizi saldırıları;
+
+ Tahmini güç ölçümlerini bir model ile oluşturup gerçek güç ölçümleriyle kıyaslar.Burada osiloskop gibi devre elemanları,toplanan güç ölçüm sayısı önemlidir.
+
+Elektromanyetik Analiz " ";
+
+ Güç analizinde olduğu gibi burda da farklı girişler için farklı elektromanyetik dalgalar yayılır.
+
+Ekran görüntüsü(Yan Kanala önlem)
+--------------------------------------
+
+12.Video Donanımsal Güvenlik Modülü(HSM)
+
+Kriptografik anahtarları güvenli bir şekilde saklar ve güvenli ve yüksek performanslı bir şekilde kullanır.İlk olarak 1970'lerde bankacılık sektöründe kullanılmaya başlandı.
+
+Kriptografik anahtar dışında birşey saklamaz.VPN veya firewall değildir.
+
+Anahtarları sunucuda güvenli şekilde saklamak ve kullanmak çok zor ve sunucularda yüksek performanslı kriptografik işlem yapılabilir.Bu yüzden HSM kullanılır.
+
+Kurcalamaya karşı önlemler;
+
+ Tamper evidence=Etiket var.Saldırgan bunu kaldırmak zorunda makinaya erişmesi için,kaldırdığı zaman saldırdığı da anlaşılır.
+ Tamper Resistance=Güvenlik vidaları gibi
+ Tamper Detection=Güç,hareket,sıcaklık sensörleri vs.
+ Tamper Response=Kurcalamanın algılanmasında dışında belirli prosedürler işletme(sıfırlama gibi)
+
+Basit Güç analizi,diferansiyel " ",Elektromanyetik emisyon analizi
+Yazılımsal ve donanımsal kontroller,kripto çekrdekleri kendi kendine test etme erişim ve iletişim kontrolü vs.
+
+
+Genel amaçlı hsm=genel işlemleri barındırır,ne yapacağınızı kendiniz seçersiniz
+ödeme sistemleri amaçlı hsm=ödeme işlemleriyle ilgili temel şeyleri barındırır
+
+ağ tipi donanımsal=diğer bilgisayarlar ile ağ üzerinden haberleşir
+pcı=uyumlu bir sunucuya takılması gerekir
+
+En önemli kullanım arayüzü PKCS(Cryptoki).
+
+Hsm'ler içinde birbirinden izole mantıksal bölümler,farklı erişim yetkilendirmeleri,farklı bölümlerde saklanan anahtarlar,farklı anahtarlar için farklı güvenlik özellikleri
+vardır.
+
+Bankacılık, ssl sonlandırma(kimlik doğrulama,el sıkışma), e-devlet, blok zinciri gibi alanlarda kullanılır.Bulut hali de var.
+
+Bilinen en önemli sertifikasyon FIST 140-2
+
+Kurulum ve konfigürasyonun doğru yapılması,kullanıcıların konu hakkında bilgisinin olması,anahtar yönetiminin doğru yapılması HSM'in doğru kullanılması için önemli.
+-------------------------------------------------------------
+
+13.VİDEO Güncel Kriptoloji Uygulamaları
+
+Gizli verilerin güvenliğinin sağlanması - Veri bütünlüğü - Muhattabın doğrulanması.Ekran görüntüleri var hepsinin.
+
+Kaynak doğrulaması;örneğin bu belge gerçekten devlet belgesi mi.
+Uç noktanın " ";örneğin uygulamalar,kartlar merkezi bir sisteme bağlı.Bağlandığı sistem doğru mu bunu kontrol eder.
+
+Dijital kimlik doğrulama;
+
+ -Sertifika doğrulama=SSL,Blok zincir vs.Asimetrik alg. ve hash alg. kullanılır.
+ -Kriptogram=Akıllı kartlar.Simetrik alg. kullanılır.
+
+Şifreli İletişim
+
+ -iki güvenli ortam=simetrik alg.Akıllı kart vs.
+ -güvensiz ortamlar=asimetrik alg.SSL vs.
+
+Şifreli Veri Saklama
+
+ -Simetrik alg.Arşivler,şifreli diskler
+
+Veri Bütünlüğü
+
+ -iki güvenli ortam=Akıllı kartlar,IOT cihazları.
+ -Diğer=Dijital imza gibi konular.Asimetrik alg.
+
+
+
+
+
+
+ 
+
 
 

